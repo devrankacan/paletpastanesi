@@ -148,6 +148,7 @@ async function main() {
           description: product.description,
           price: product.price,
           stock: product.stock,
+          imageUrl: "imageUrl" in product ? product.imageUrl : null,
           categoryId: createdCategory.id,
         },
       });
