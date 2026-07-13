@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product-card";
 import { Faq } from "@/components/faq";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const featuredProducts = await prisma.product.findMany({
     where: { isActive: true },
