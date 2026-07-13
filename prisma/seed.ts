@@ -18,6 +18,7 @@ const categories = [
           "Bisküvi kenarlı, bol meyveli klasik şarlot yaş pasta (4-6 kişilik).",
         price: 104999,
         stock: 10,
+        imageUrl: "/urun-gorselleri/sarlot-yas-pasta.png",
       },
       {
         name: "Çilekli Profiterol Soslu Yaş Pasta (4-6 Kişilik)",
@@ -26,6 +27,7 @@ const categories = [
           "Taze çilek ve profiterol soslu, bol kremalı yaş pasta.",
         price: 104999,
         stock: 8,
+        imageUrl: "/urun-gorselleri/cilekli-profiterol-soslu-yas-pasta.png",
       },
       {
         name: "Çikolatalı Muzlu Rulo Pasta",
@@ -33,6 +35,7 @@ const categories = [
         description: "Çikolata aşklı, muzlu ve taze meyveli rulo pasta.",
         price: 20999,
         stock: 15,
+        imageUrl: "/urun-gorselleri/cikolatali-muzlu-rulo-pasta.png",
       },
       {
         name: "Çilekli Magnolyalı Yaş Pasta",
@@ -40,6 +43,7 @@ const categories = [
         description: "Taze çilekli, magnolyalı sütlü yaş pasta.",
         price: 104999,
         stock: 8,
+        imageUrl: "/urun-gorselleri/cilekli-magnolyali-yas-pasta.png",
       },
     ],
   },
@@ -93,6 +97,7 @@ const categories = [
         description: "Bol kremalı, çikolata kaplamalı adet tatlısı İzmir bomba.",
         price: 6499,
         stock: 25,
+        imageUrl: "/urun-gorselleri/izmir-bomba.png",
       },
       {
         name: "İbiza",
@@ -100,6 +105,7 @@ const categories = [
         description: "Meyveli ve kremalı, davetlerin gözdesi İbiza pasta.",
         price: 32499,
         stock: 12,
+        imageUrl: "/urun-gorselleri/ibiza.png",
       },
       {
         name: "Tiramisu",
@@ -107,12 +113,14 @@ const categories = [
         description: "İtalyan usulü kahveli, mascarpone kremalı tiramisu.",
         price: 32499,
         stock: 15,
+        imageUrl: "/urun-gorselleri/tiramisu.png",
       },
       {
         name: "Profiterol",
         slug: "profiterol",
         description: "Bol çikolata soslu, kremalı profiterol (porsiyon).",
         price: 32499,
+        imageUrl: "/urun-gorselleri/profiterol.png",
         stock: 15,
       },
     ],

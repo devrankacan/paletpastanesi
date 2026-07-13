@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/format";
@@ -21,8 +22,18 @@ export default async function ProductDetailPage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
-        <div className="flex h-72 items-center justify-center rounded-2xl bg-amber-50 text-8xl">
-          🍰
+        <div className="relative flex h-72 items-center justify-center overflow-hidden rounded-2xl bg-amber-50 text-8xl">
+          {product.imageUrl ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 100vw, 50vw"
+              className="object-cover"
+            />
+          ) : (
+            "🍰"
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <span className="text-sm font-medium uppercase tracking-wide text-amber-600">

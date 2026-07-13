@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/format";
 import { useCart } from "@/lib/cart-context";
@@ -20,8 +21,18 @@ export function ProductCard({ product }: { product: ProductCardProduct }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-amber-100 bg-white shadow-sm transition hover:shadow-md">
       <Link href={`/urunler/${product.slug}`}>
-        <div className="flex h-40 items-center justify-center bg-amber-50 text-5xl">
-          🍰
+        <div className="relative flex h-40 items-center justify-center overflow-hidden bg-amber-50 text-5xl">
+          {product.imageUrl ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 100vw, 33vw"
+              className="object-cover"
+            />
+          ) : (
+            "🍰"
+          )}
         </div>
       </Link>
       <div className="flex flex-1 flex-col gap-2 p-4">
