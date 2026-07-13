@@ -1,11 +1,17 @@
+import Image from "next/image";
+
 export function Footer() {
   return (
     <footer className="border-t border-amber-100 bg-amber-50/60">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-3">
         <div id="hakkimizda">
-          <h3 className="mb-2 text-lg font-semibold text-amber-900">
-            Palet Pastaneleri
-          </h3>
+          <Image
+            src="/site-gorselleri/logo.png"
+            alt="Palet Pastaneleri"
+            width={140}
+            height={62}
+            className="mb-3 h-10 w-auto object-contain"
+          />
           <p className="mb-3 text-sm text-stone-600">
             Trabzon&apos;un tatlı yüzü. Taze malzemelerle hazırladığımız
             pasta, tatlı ve kuru pastalarımızı artık online sipariş ile

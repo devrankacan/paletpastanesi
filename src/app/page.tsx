@@ -1,31 +1,43 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product-card";
+import { CategoryCards } from "@/components/category-cards";
 import { Faq } from "@/components/faq";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const featuredProducts = await prisma.product.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: "asc" },
-    take: 6,
-  });
+  const [featuredProducts, categories] = await Promise.all([
+    prisma.product.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: "asc" },
+      take: 6,
+    }),
+    prisma.category.findMany({ orderBy: { order: "asc" } }),
+  ]);
 
   return (
     <div>
-      <section className="bg-gradient-to-b from-amber-50 to-white">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-20 text-center">
-          <span className="text-sm font-semibold uppercase tracking-wide text-amber-700">
+      <section className="relative flex h-[420px] items-center justify-center overflow-hidden bg-amber-900 text-center sm:h-[520px]">
+        <Image
+          src="/site-gorselleri/hero-1.png"
+          alt="Palet Pastaneleri"
+          fill
+          priority
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
+        <div className="relative flex flex-col items-center gap-6 px-4">
+          <span className="text-sm font-semibold uppercase tracking-wide text-gold-400">
             #TrabzonunTatlıYüzü
           </span>
-          <h1 className="text-4xl font-bold text-amber-900 sm:text-5xl">
-            Taze Pasta ve Tatlılar Kapınızda
+          <h1 className="max-w-2xl text-4xl font-bold text-white sm:text-5xl">
+            Palet&apos;in Eşsiz Lezzet Dünyasını Keşfedin
           </h1>
-          <p className="max-w-2xl text-lg text-stone-600">
-            Palet Pastaneleri&apos;nin özenle hazırladığı pastalar, şerbetli
-            tatlılar, kuru pastalar ve adet tatlıları artık birkaç tıkla
-            sipariş edebilirsiniz.
+          <p className="max-w-xl text-lg text-white/90">
+            Her damak tadına uygun, günlük ve taze pasta, tatlı ve kuru pasta
+            seçenekleri artık birkaç tıkla kapınızda.
           </p>
           <Link
             href="/urunler"
@@ -35,6 +47,8 @@ export default async function Home() {
           </Link>
         </div>
       </section>
+
+      <CategoryCards categories={categories} />
 
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">

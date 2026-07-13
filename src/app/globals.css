@@ -5,18 +5,19 @@
   --foreground: #171717;
 }
 
-/* Palet Pastaneleri marka renkleri (palet.com.tr'den) */
+/* Palet Pastaneleri marka renkleri (palet.com.tr'nin gerçek kahverengi/krem temasından) */
 @theme {
-  --color-amber-50: #fef6ee;
-  --color-amber-100: #fce8d3;
-  --color-amber-200: #f9d0a8;
-  --color-amber-300: #f5b273;
-  --color-amber-400: #f98f3f;
-  --color-amber-500: #f7630c;
-  --color-amber-600: #f7630c;
-  --color-amber-700: #b82105;
-  --color-amber-800: #8f1a06;
-  --color-amber-900: #3b2113;
+  --color-amber-50: #fbf6f0;
+  --color-amber-100: #f0e0cb;
+  --color-amber-200: #e2c6a0;
+  --color-amber-300: #cda372;
+  --color-amber-400: #a87a59;
+  --color-amber-500: #815637;
+  --color-amber-600: #815637;
+  --color-amber-700: #5e3f2b;
+  --color-amber-800: #4a3020;
+  --color-amber-900: #2d1f14;
+  --color-gold-400: #fed700;
 }
 
 @theme inline {
