@@ -12,7 +12,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">🧁</span>
           <span className="text-xl font-semibold text-amber-900">
-            Palet Pastanesi
+            Palet Pastaneleri
           </span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-stone-700 sm:flex">
@@ -27,6 +27,9 @@ export function Header() {
           </Link>
           <Link href="/#iletisim" className="hover:text-amber-700">
             İletişim
+          </Link>
+          <Link href="/siparis-takip" className="hover:text-amber-700">
+            Sipariş Takip
           </Link>
         </nav>
         <Link

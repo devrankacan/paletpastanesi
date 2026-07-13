@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const heading = Poppins({
+  variable: "--font-heading",
+  weight: ["500", "600", "700"],
+  subsets: ["latin"],
+});
+
+const body = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
@@ -16,9 +22,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Palet Pastanesi | Online Pasta ve Tatlı Siparişi",
+  title: "Palet Pastaneleri | Online Pasta ve Tatlı Siparişi",
   description:
-    "Palet Pastanesi'nin taze pasta, kek, kurabiye ve tatlılarını online sipariş edin, kapınıza kadar getirelim.",
+    "Trabzon'un tatlı yüzü Palet Pastaneleri'nin taze pasta, tatlı ve kurabiyelerini online sipariş edin.",
 };
 
 export default function RootLayout({
@@ -29,9 +35,9 @@ export default function RootLayout({
   return (
     <html
       lang="tr"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${heading.variable} ${body.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-white text-stone-900">
+      <body className="flex min-h-full flex-col bg-white font-(family-name:--font-body) text-stone-900">
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>

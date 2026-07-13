@@ -3,90 +3,116 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+// palet.com.tr'deki gerçek kategori ve ürün adı/fiyatları referans alınmıştır.
+// Kuru Pastalar ve Şerbetli Tatlılar için gerçek ürün listesi henüz elimizde
+// olmadığından bu iki kategoride yer tutucu (placeholder) ürünler var.
 const categories = [
   {
     name: "Pastalar",
     slug: "pastalar",
     products: [
       {
-        name: "Yaş Pasta (Çilekli)",
-        slug: "yas-pasta-cilekli",
-        description: "Taze çilek ve kremalı, yumuşak pandispanya tabanlı yaş pasta.",
-        price: 45000,
+        name: "Şarlot Yaş Pasta",
+        slug: "sarlot-yas-pasta",
+        description:
+          "Bisküvi kenarlı, bol meyveli klasik şarlot yaş pasta (4-6 kişilik).",
+        price: 104999,
         stock: 10,
       },
       {
-        name: "Çikolatalı Islak Pasta",
-        slug: "cikolatali-islak-pasta",
-        description: "Bol çikolata soslu, yoğun kakaolu ıslak pasta dilimi.",
-        price: 18000,
-        stock: 20,
+        name: "Çilekli Profiterol Soslu Yaş Pasta (4-6 Kişilik)",
+        slug: "cilekli-profiterol-soslu-yas-pasta",
+        description:
+          "Taze çilek ve profiterol soslu, bol kremalı yaş pasta.",
+        price: 104999,
+        stock: 8,
       },
       {
-        name: "Red Velvet Pasta",
-        slug: "red-velvet-pasta",
-        description: "Cream cheese kremalı klasik red velvet pasta.",
-        price: 48000,
+        name: "Çikolatalı Muzlu Rulo Pasta",
+        slug: "cikolatali-muzlu-rulo-pasta",
+        description: "Çikolata aşklı, muzlu ve taze meyveli rulo pasta.",
+        price: 20999,
+        stock: 15,
+      },
+      {
+        name: "Çilekli Magnolyalı Yaş Pasta",
+        slug: "cilekli-magnolyali-yas-pasta",
+        description: "Taze çilekli, magnolyalı sütlü yaş pasta.",
+        price: 104999,
         stock: 8,
       },
     ],
   },
   {
-    name: "Kekler",
-    slug: "kekler",
+    name: "Şerbetli Tatlılar",
+    slug: "serbetli-tatlilar",
     products: [
       {
-        name: "Limonlu Kek",
-        slug: "limonlu-kek",
-        description: "Taze limon kabuğu ile hazırlanmış, sulu kek.",
-        price: 9000,
+        name: "Fıstıklı Baklava",
+        slug: "fistikli-baklava",
+        description: "Bol Antep fıstıklı, ince yufkalı geleneksel baklava (1 kg).",
+        price: 89999,
+        stock: 20,
+      },
+      {
+        name: "Şöbiyet",
+        slug: "sobiyet",
+        description: "Kaymaklı ve fıstıklı, şerbetli geleneksel şöbiyet (1 kg).",
+        price: 94999,
+        stock: 15,
+      },
+    ],
+  },
+  {
+    name: "Kuru Pastalar",
+    slug: "kuru-pastalar",
+    products: [
+      {
+        name: "Kakaolu Çay Kurabiyesi",
+        slug: "kakaolu-cay-kurabiyesi",
+        description: "Çay saatlerinin vazgeçilmezi, kakaolu kuru pasta çeşidi (500g).",
+        price: 24999,
         stock: 30,
       },
       {
-        name: "Cevizli Kek",
-        slug: "cevizli-kek",
-        description: "Bol cevizli, geleneksel tarif ile yapılan ev keki.",
-        price: 9500,
+        name: "Karışık Kuru Pasta Tepsisi",
+        slug: "karisik-kuru-pasta-tepsisi",
+        description: "Çeşit çeşit kuru pastalardan oluşan ikramlık tepsi.",
+        price: 39999,
+        stock: 20,
+      },
+    ],
+  },
+  {
+    name: "Sütlü ve Adet Tatlılar",
+    slug: "sutlu-ve-adet-tatlilar",
+    products: [
+      {
+        name: "İzmir Bomba",
+        slug: "izmir-bomba",
+        description: "Bol kremalı, çikolata kaplamalı adet tatlısı İzmir bomba.",
+        price: 6499,
         stock: 25,
       },
-    ],
-  },
-  {
-    name: "Kurabiyeler",
-    slug: "kurabiyeler",
-    products: [
       {
-        name: "Un Kurabiyesi",
-        slug: "un-kurabiyesi",
-        description: "Ağızda dağılan, geleneksel un kurabiyesi (250g).",
-        price: 7500,
-        stock: 40,
-      },
-      {
-        name: "Damla Çikolatalı Kurabiye",
-        slug: "damla-cikolatali-kurabiye",
-        description: "Bol damla çikolatalı, çıtır kurabiye (250g).",
-        price: 8000,
-        stock: 40,
-      },
-    ],
-  },
-  {
-    name: "Tatlılar",
-    slug: "tatlilar",
-    products: [
-      {
-        name: "Profiterol",
-        slug: "profiterol",
-        description: "Bol çikolata soslu, kremalı profiterol (porsiyon).",
-        price: 12000,
-        stock: 15,
+        name: "İbiza",
+        slug: "ibiza",
+        description: "Meyveli ve kremalı, davetlerin gözdesi İbiza pasta.",
+        price: 32499,
+        stock: 12,
       },
       {
         name: "Tiramisu",
         slug: "tiramisu",
         description: "İtalyan usulü kahveli, mascarpone kremalı tiramisu.",
-        price: 14000,
+        price: 32499,
+        stock: 15,
+      },
+      {
+        name: "Profiterol",
+        slug: "profiterol",
+        description: "Bol çikolata soslu, kremalı profiterol (porsiyon).",
+        price: 32499,
         stock: 15,
       },
     ],
@@ -94,24 +120,21 @@ const categories = [
 ];
 
 async function main() {
+  // Dev veritabanını sıfırdan gerçek ürün listesiyle doldurmak için
+  // önceki test siparişlerini ve eski ürün/kategorileri temizliyoruz.
+  await prisma.order.deleteMany();
+  await prisma.cart.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.category.deleteMany();
+
   for (const [order, category] of categories.entries()) {
-    const createdCategory = await prisma.category.upsert({
-      where: { slug: category.slug },
-      update: { name: category.name, order },
-      create: { name: category.name, slug: category.slug, order },
+    const createdCategory = await prisma.category.create({
+      data: { name: category.name, slug: category.slug, order },
     });
 
     for (const product of category.products) {
-      await prisma.product.upsert({
-        where: { slug: product.slug },
-        update: {
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          stock: product.stock,
-          categoryId: createdCategory.id,
-        },
-        create: {
+      await prisma.product.create({
+        data: {
           name: product.name,
           slug: product.slug,
           description: product.description,
