@@ -3,9 +3,12 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 export async function Footer() {
-  const categories = await prisma.category.findMany({
-    orderBy: { order: "asc" },
-  });
+  // Next.js'in otomatik oluşturduğu /_not-found gibi sayfalar build sırasında
+  // statik olarak üretilmeye çalışıldığında veritabanı erişimi olmayabilir;
+  // footer navigasyonu kritik olmadığından bu durumda sessizce boş liste kullanılır.
+  const categories = await prisma.category
+    .findMany({ orderBy: { order: "asc" } })
+    .catch(() => []);
 
   return (
     <footer className="border-t border-amber-100 bg-amber-50/60">
