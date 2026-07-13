@@ -3,9 +3,9 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-// palet.com.tr'deki gerçek kategori ve ürün adı/fiyatları referans alınmıştır.
-// Kuru Pastalar ve Şerbetli Tatlılar için gerçek ürün listesi henüz elimizde
-// olmadığından bu iki kategoride yer tutucu (placeholder) ürünler var.
+// palet.com.tr'deki gerçek kategoriler ve gerçek ürün fotoğrafları (repoya
+// yüklenen dosyalar) referans alınmıştır. Kuru Pastalar için henüz gerçek
+// ürün/görsel elimizde olmadığından bu kategori şimdilik boş.
 const categories = [
   {
     name: "Pastalar",
@@ -45,6 +45,71 @@ const categories = [
         stock: 8,
         imageUrl: "/urun-gorselleri/cilekli-magnolyali-yas-pasta.png",
       },
+      {
+        name: "Frambuazlı Yaş Pasta",
+        slug: "frambuazli-yas-pasta",
+        description: "Taze frambuazlı, hafif kremalı yaş pasta.",
+        price: 89999,
+        stock: 10,
+        imageUrl: "/urun-gorselleri/frambuazli-yas-pasta.png",
+      },
+      {
+        name: "Kara Orman Yaş Pasta (6-8 Kişilik)",
+        slug: "kara-orman-yas-pasta",
+        description:
+          "Vişneli, çikolatalı klasik kara orman pasta (6-8 kişilik).",
+        price: 129999,
+        stock: 6,
+        imageUrl: "/urun-gorselleri/kara-orman-yas-pasta.png",
+      },
+      {
+        name: "Karışık Meyveli Yaş Pasta (2 Kişilik)",
+        slug: "karisik-meyveli-yas-pasta",
+        description: "Mevsim meyveleriyle süslenmiş, küçük boy yaş pasta (2 kişilik).",
+        price: 39999,
+        stock: 15,
+        imageUrl: "/urun-gorselleri/karisik-meyveli-yas-pasta.png",
+      },
+      {
+        name: "Lotuslu Çilekli Yaş Pasta (4-6 Kişilik)",
+        slug: "lotuslu-cilekli-yas-pasta",
+        description: "Lotus bisküvili, çilekli, bol kremalı yaş pasta.",
+        price: 104999,
+        stock: 8,
+        imageUrl: "/urun-gorselleri/lotuslu-cilekli-yas-pasta.png",
+      },
+      {
+        name: "Muzlu Profiterol Soslu Yaş Pasta (4-6 Kişilik)",
+        slug: "muzlu-profiterol-soslu-yas-pasta",
+        description: "Muzlu ve profiterol soslu, bol kremalı yaş pasta.",
+        price: 104999,
+        stock: 8,
+        imageUrl: "/urun-gorselleri/muzlu-profiterol-soslu-yas-pasta.png",
+      },
+      {
+        name: "Special Yaş Pasta (4-6 Kişilik)",
+        slug: "special-yas-pasta",
+        description: "Palet Pastaneleri'nin özel tarifi, imza yaş pastası.",
+        price: 109999,
+        stock: 8,
+        imageUrl: "/urun-gorselleri/special-yas-pasta.png",
+      },
+      {
+        name: "Uğur Böceği Yaş Pasta (4-6 Kişilik)",
+        slug: "ugur-boceyi-yas-pasta",
+        description: "Çocuklara özel, uğur böceği temalı süslü yaş pasta.",
+        price: 114999,
+        stock: 6,
+        imageUrl: "/urun-gorselleri/ugur-boceyi-yas-pasta.png",
+      },
+      {
+        name: "Çikolatalı Sarma Pasta (6-8 Kişilik)",
+        slug: "cikolatali-sarma-pasta",
+        description: "Bol çikolatalı, rulo şeklinde sarma pasta (6-8 kişilik).",
+        price: 129999,
+        stock: 6,
+        imageUrl: "/urun-gorselleri/cikolatali-sarma-pasta.png",
+      },
     ],
   },
   {
@@ -52,40 +117,35 @@ const categories = [
     slug: "serbetli-tatlilar",
     products: [
       {
-        name: "Fıstıklı Baklava",
-        slug: "fistikli-baklava",
-        description: "Bol Antep fıstıklı, ince yufkalı geleneksel baklava (1 kg).",
+        name: "Cevizli Baklava",
+        slug: "cevizli-baklava",
+        description: "Bol cevizli, ince yufkalı geleneksel baklava (1 kg).",
         price: 89999,
         stock: 20,
+        imageUrl: "/urun-gorselleri/cevizli-baklava.png",
       },
       {
-        name: "Şöbiyet",
-        slug: "sobiyet",
-        description: "Kaymaklı ve fıstıklı, şerbetli geleneksel şöbiyet (1 kg).",
-        price: 94999,
+        name: "Kuru Baklava",
+        slug: "kuru-baklava",
+        description: "Az şerbetli, çıtır yufkalı kuru baklava (1 kg).",
+        price: 79999,
+        stock: 20,
+        imageUrl: "/urun-gorselleri/kuru-baklava.png",
+      },
+      {
+        name: "Fındıklı Köy Burması",
+        slug: "findikli-koy-burmasi",
+        description: "Karadeniz fındığıyla hazırlanan geleneksel köy burması (1 kg).",
+        price: 84999,
         stock: 15,
+        imageUrl: "/urun-gorselleri/findikli-koy-burmasi.png",
       },
     ],
   },
   {
     name: "Kuru Pastalar",
     slug: "kuru-pastalar",
-    products: [
-      {
-        name: "Kakaolu Çay Kurabiyesi",
-        slug: "kakaolu-cay-kurabiyesi",
-        description: "Çay saatlerinin vazgeçilmezi, kakaolu kuru pasta çeşidi (500g).",
-        price: 24999,
-        stock: 30,
-      },
-      {
-        name: "Karışık Kuru Pasta Tepsisi",
-        slug: "karisik-kuru-pasta-tepsisi",
-        description: "Çeşit çeşit kuru pastalardan oluşan ikramlık tepsi.",
-        price: 39999,
-        stock: 20,
-      },
-    ],
+    products: [],
   },
   {
     name: "Sütlü ve Adet Tatlılar",
@@ -120,8 +180,24 @@ const categories = [
         slug: "profiterol",
         description: "Bol çikolata soslu, kremalı profiterol (porsiyon).",
         price: 32499,
-        imageUrl: "/urun-gorselleri/profiterol.png",
         stock: 15,
+        imageUrl: "/urun-gorselleri/profiterol.png",
+      },
+      {
+        name: "Ekler",
+        slug: "ekler",
+        description: "Kremalı, çikolata kaplamalı klasik ekler.",
+        price: 8999,
+        stock: 25,
+        imageUrl: "/urun-gorselleri/ekler.png",
+      },
+      {
+        name: "Laz Böreği",
+        slug: "laz-boregi",
+        description: "Karadeniz'in meşhur mısır unlu, muhallebili laz böreği.",
+        price: 12999,
+        stock: 20,
+        imageUrl: "/urun-gorselleri/laz-boregi.png",
       },
     ],
   },
