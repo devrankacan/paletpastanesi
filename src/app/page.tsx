@@ -3,6 +3,9 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product-card";
 import { CategoryCards } from "@/components/category-cards";
+import { PromoBanner } from "@/components/promo-banner";
+import { Reviews } from "@/components/reviews";
+import { ContactForm } from "@/components/contact-form";
 import { Faq } from "@/components/faq";
 
 export const dynamic = "force-dynamic";
@@ -74,7 +77,23 @@ export default async function Home() {
         )}
       </section>
 
+      <PromoBanner
+        image="/site-gorselleri/hero-1.png"
+        title="En Özel Günlerinize Palet Pastanesi İmzası"
+        description="Doğum günlerinden düğünlere, kutlamalarınızı unutulmaz kılacak butik pastalar tasarlıyoruz. Siz hayal edin, biz en taze malzemeler ve usta dokunuşlarla o hayali gerçeğe dönüştürelim."
+      />
+
       <Faq />
+
+      <PromoBanner
+        image="/site-gorselleri/hero-2.png"
+        title="Efsane Palet Dondurması Geri Döndü!"
+        description="Sadece süt, meyve ve ustalık... Yapay tatlandırıcı içermeyen, doğal ve taptaze dondurma çeşitlerimizle tanışın. Gerçek dondurma lezzetini özleyenler için."
+      />
+
+      <Reviews />
+
+      <ContactForm />
     </div>
   );
 }
