@@ -1,13 +1,12 @@
-// Palet Pastanesi e-ticaret veritabanı şeması
-// Yerelde SQLite kullanılır. Production'da datasource'u "postgresql" yapıp
-// DATABASE_URL'i bir Postgres bağlantısına çevirmen yeterli.
+// Palet Pastaneleri e-ticaret veritabanı şeması
+// PostgreSQL kullanılır (yerel geliştirmede docker-compose ile, production'da VPS üzerindeki container'da).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

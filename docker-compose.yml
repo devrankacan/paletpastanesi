@@ -1,0 +1,64 @@
+# Bu stack tamamen izole bir Docker network'ünde çalışır ve sadece
+# APP_PORT ile belirttiğin tek bir host portunu dışarı açar; sunucudaki
+# diğer sitelere/servislere dokunmaz.
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: palet-pastaneleri-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-palet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD .env dosyasinda tanimlanmali}
+      POSTGRES_DB: ${POSTGRES_DB:-palet}
+    volumes:
+      - palet_pastaneleri_pgdata:/var/lib/postgresql/data
+    networks:
+      - palet-pastaneleri-net
+
+  app:
+    build:
+      context: .
+      target: runner
+    container_name: palet-pastaneleri-app
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-palet}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-palet}
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET .env dosyasinda tanimlanmali}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      IYZICO_API_KEY: ${IYZICO_API_KEY}
+      IYZICO_SECRET_KEY: ${IYZICO_SECRET_KEY}
+      IYZICO_BASE_URL: ${IYZICO_BASE_URL}
+    ports:
+      - "${APP_PORT:-3010}:3000"
+    networks:
+      - palet-pastaneleri-net
+
+  # Sadece elle çalıştırılır (örnek ürünler + admin kullanıcı oluşturur):
+  #   docker compose --profile tools run --rm seed
+  seed:
+    build:
+      context: .
+      target: seed
+    container_name: palet-pastaneleri-seed
+    profiles: ["tools"]
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-palet}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-palet}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    networks:
+      - palet-pastaneleri-net
+
+networks:
+  palet-pastaneleri-net:
+    name: palet-pastaneleri-net
+
+volumes:
+  palet_pastaneleri_pgdata:
+    name: palet_pastaneleri_pgdata

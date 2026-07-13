@@ -1,22 +1,26 @@
-# Palet Pastanesi — Online Sipariş Sitesi
+# Palet Pastaneleri — Online Sipariş Sitesi
 
 Next.js (App Router) + Prisma + iyzico ile geliştirilmiş, WordPress'ten
-taşınmakta olan Palet Pastanesi için özel yazılım altyapılı e-ticaret sitesi.
+taşınmakta olan Palet Pastaneleri için özel yazılım altyapılı e-ticaret sitesi.
 
 ## Teknolojiler
 
 - **Next.js 16** (TypeScript, App Router, Tailwind CSS)
-- **Prisma** + SQLite (yerel geliştirme). Production'da `prisma/schema.prisma`
-  içindeki `datasource` bloğunu `postgresql` yapıp `DATABASE_URL`'i bir
-  Postgres bağlantısına çevirmen yeterli.
+- **Prisma** + **PostgreSQL** (yerelde de, üretimde de)
 - **NextAuth** (Credentials) — admin paneli girişi
 - **iyzico** — kredi kartı ile online ödeme (Checkout Form API)
+- **Docker / docker-compose** — VPS'e izole şekilde kurulum için (bkz. [DEPLOY.md](./DEPLOY.md))
 
-## Kurulum
+## Kurulum (yerel geliştirme)
+
+Bir PostgreSQL sunucusuna ihtiyacın var (yerelde kurulu Postgres, ya da
+`docker run -e POSTGRES_PASSWORD=palet -e POSTGRES_USER=palet -e POSTGRES_DB=palet -p 5432:5432 postgres:16-alpine`).
 
 ```bash
+cp .env.example .env   # DATABASE_URL'i kendi Postgres'ine göre düzenle
 npm install
-npm run db:seed   # örnek kategoriler/ürünler + admin kullanıcı oluşturur
+npx prisma migrate dev
+npm run db:seed         # örnek kategoriler/ürünler + admin kullanıcı oluşturur
 npm run dev
 ```
 
@@ -25,13 +29,21 @@ Admin paneli: http://localhost:3000/admin (varsayılan giriş `.env` dosyasında
 `ADMIN_EMAIL` / `ADMIN_PASSWORD` değerleridir, seed çalıştırıldığında bu
 bilgilerle bir admin kullanıcı oluşturulur)
 
+## VPS'e Deploy
+
+Siteyi kendi VPS'ine (Docker ile, diğer sitelerini etkilemeden, tek bir
+subdomain + boş port üzerinden) kurmak için adım adım rehber:
+**[DEPLOY.md](./DEPLOY.md)**
+
 ## Ortam Değişkenleri (.env)
 
 `.env.example` dosyasını `.env` olarak kopyalayıp değerleri doldur:
 
 | Değişken | Açıklama |
 | --- | --- |
-| `DATABASE_URL` | Veritabanı bağlantısı (yerelde `file:./dev.db`) |
+| `DATABASE_URL` | PostgreSQL bağlantısı |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` | docker-compose ile deploy ederken kullanılan veritabanı kimlik bilgileri |
+| `APP_PORT` | docker-compose ile deploy ederken sitenin yayınlanacağı host portu |
 | `AUTH_SECRET` | NextAuth için rastgele, gizli bir anahtar |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Seed script'in oluşturacağı admin girişi |
 | `IYZICO_API_KEY` / `IYZICO_SECRET_KEY` | iyzico merchant panelinden alınan sandbox/production anahtarları |
@@ -74,5 +86,7 @@ src/lib/cart-context.tsx   Tarayıcıda (localStorage) tutulan sepet durumu
 - `npm run dev` — geliştirme sunucusu
 - `npm run build` — production build
 - `npm run lint` — ESLint
+- `npx prisma migrate dev` — veritabanı migration'larını uygula
 - `npm run db:seed` — örnek veri + admin kullanıcı oluşturur
 - `npx prisma studio` — veritabanını tarayıcıda görüntüle/düzenle
+- `docker compose up -d --build` — Docker ile ayağa kaldır (bkz. DEPLOY.md)
