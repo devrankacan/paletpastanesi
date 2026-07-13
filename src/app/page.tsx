@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { ProductCard } from "@/components/product-card";
 import { CategoryCards } from "@/components/category-cards";
+import { ProductBrowser } from "@/components/product-browser";
 import { PromoBanner } from "@/components/promo-banner";
 import { Reviews } from "@/components/reviews";
 import { ContactForm } from "@/components/contact-form";
@@ -10,12 +10,38 @@ import { Faq } from "@/components/faq";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const [featuredProducts, categories] = await Promise.all([
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ kategori?: string | string[]; min?: string; max?: string }>;
+}) {
+  const params = await searchParams;
+  const selectedSlugs = Array.isArray(params.kategori)
+    ? params.kategori
+    : params.kategori
+      ? [params.kategori]
+      : [];
+  const min = params.min ? Number(params.min) : undefined;
+  const max = params.max ? Number(params.max) : undefined;
+
+  const [products, categories] = await Promise.all([
     prisma.product.findMany({
-      where: { isActive: true },
+      where: {
+        isActive: true,
+        ...(selectedSlugs.length
+          ? { category: { slug: { in: selectedSlugs } } }
+          : {}),
+        ...(min !== undefined || max !== undefined
+          ? {
+              price: {
+                ...(min !== undefined ? { gte: Math.round(min * 100) } : {}),
+                ...(max !== undefined ? { lte: Math.round(max * 100) } : {}),
+              },
+            }
+          : {}),
+      },
       orderBy: { createdAt: "asc" },
-      take: 6,
+      include: { category: true },
     }),
     prisma.category.findMany({ orderBy: { order: "asc" } }),
   ]);
@@ -55,9 +81,7 @@ export default async function Home() {
 
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-amber-900">
-            Öne Çıkan Ürünler
-          </h2>
+          <h2 className="text-2xl font-semibold text-amber-900">Ürünler</h2>
           <Link
             href="/urunler"
             className="text-sm font-medium text-amber-700 hover:underline"
@@ -65,16 +89,14 @@ export default async function Home() {
             Tümünü Gör →
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-        {featuredProducts.length === 0 && (
-          <p className="text-stone-500">
-            Henüz ürün eklenmedi. Yakında burada olacaklar!
-          </p>
-        )}
+        <ProductBrowser
+          categories={categories}
+          products={products}
+          selectedSlugs={selectedSlugs}
+          min={params.min}
+          max={params.max}
+          clearHref="/"
+        />
       </section>
 
       <PromoBanner
